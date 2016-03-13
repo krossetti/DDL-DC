@@ -53,8 +53,8 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 
 ## About the dataset
 - where to get it: https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb    
-
-![Data snapshot](https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb)
+- what it looks like    
+![Data snapshot](figures/visitors.png)
 
 - how to load it into Python    
 - what the features are    
