@@ -54,7 +54,7 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 ## About the dataset
 - where to get it: https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb    
 
-[Data snapshot](https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb/widget_preview?width=760&height=646&customization_id=)    
+[Data snapshot](<div><iframe width="760px" title="White House Visitor Records Requests" height="646px" src="https://open.whitehouse.gov/w/p86s-ychb/u9ea-ajcm?cur=Nv2HEu0VnO0&from=root" frameborder="0"scrolling="no"><a href="https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb" title="White House Visitor Records Requests" target="_blank">White House Visitor Records Requests</a></iframe><p><a href="http://www.socrata.com/" target="_blank">Powered by Socrata</a></p></div>)    
 
 - how to load it into Python    
 - what the features are    
