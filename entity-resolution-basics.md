@@ -22,7 +22,7 @@ This post will explore some basic approaches to entity resolution using the Pyth
 - how it works   
 - how to install it   
 
-## Testing out dedupe
+## Testing out `dedupe`
 Let's experiment with using the `dedupe` library to try cleaning up our file. To get `dedupe` running, we'll need to install Unidecode, Future, and Dedupe.    
 
 In your terminal (we recommend doing so inside a [virtual environment](https://districtdatalabs.silvrback.com/how-to-develop-quality-python-code)):    
@@ -74,5 +74,6 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 
 ## Recommended Reading
 - [A Primer on Entity Resolution by Benjamin Bengfort](http://www.slideshare.net/BenjaminBengfort/a-primer-on-entity-resolution)    
+- [Entity Resolution for Big Data: A Summary of the KDD 2013 Tutorial Taught by Dr. Lise Getoor and Dr. Ashwin Machanavajjhala](http://www.datacommunitydc.org/blog/2013/08/entity-resolution-for-big-data)    
 - [A Theory for Record Linkage by Ivan P. Fellegi and Alan B. Sunter](http://courses.cs.washington.edu/courses/cse590q/04au/papers/Felligi69.pdf)   
 - etc.
