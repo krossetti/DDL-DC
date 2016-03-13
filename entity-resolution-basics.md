@@ -52,8 +52,11 @@ Do these records refer to the same thing?
 You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for active learning. When you are finished, enter 'f' to quit.
 
 ## About the dataset
-- where to get it    
-- how to load it    
+- where to get it: https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb    
+
+[Data snapshot](https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb/widget_preview?width=760&height=646&customization_id=)    
+
+- how to load it into Python    
 - what the features are    
 - how to get the data into shape for analysis    
 
