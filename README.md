@@ -17,6 +17,9 @@ To use dedupe in the classic sense of multi-name instance resolution. We will fi
 
 These are the 4 attributes chosen for the dedupe training set:
         1) NAMELAST
+        
         2) NAMEFIRST
+        
         3) APPT_START_TIME
+        
         4) MEETING_LOC
