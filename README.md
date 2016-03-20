@@ -24,6 +24,8 @@ These are the 4 attributes chosen for the dedupe training set:
         3) APPT_START_TIME
 
         4) MEETING_LOC
+        
+        5) APPT_MADE_DATE
 
 maybe also
 __uin__
