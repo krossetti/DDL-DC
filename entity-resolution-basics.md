@@ -23,6 +23,8 @@ This post will explore some basic approaches to entity resolution using the Pyth
 - how to install it   
 
 ## Testing out `dedupe`
+_Start by walking people through the csv_example.py from the `dedupe-examples` repo_
+
 Let's experiment with using the `dedupe` library to try cleaning up our file. To get `dedupe` running, we'll need to install Unidecode, Future, and Dedupe.    
 
 In your terminal (we recommend doing so inside a [virtual environment](https://districtdatalabs.silvrback.com/how-to-develop-quality-python-code)):    
@@ -52,15 +54,16 @@ Do these records refer to the same thing?
 You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for active learning. When you are finished, enter 'f' to quit.
 
 ## About the dataset
-- where to get it: https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb    
+- where to get it:     
+https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb    
 - what it looks like    
 ![Data snapshot](figures/visitors.png)
-
 - how to load it into Python    
 - what the features are    
 - how to get the data into shape for analysis    
 
 ## Tailoring the code
+_Move to using the PostgreSQL example from the `dedupe-examples` repo_
 - what you need to modify in the `dedupe` examples to get the code to work for the WH dataset    
 
 ## Active learning
@@ -76,7 +79,7 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 ## Conclusion
 
 ## Recommended Reading
-- [A Primer on Entity Resolution by Benjamin Bengfort](http://www.slideshare.net/BenjaminBengfort/a-primer-on-entity-resolution)    
+- [A Primer on Entity Resolution by Benjamin Bengfort](http://www.slideshare.net/BenjaminBengfort/a-primer-on-entity-resolution)  
 - [Entity Resolution for Big Data: A Summary of the KDD 2013 Tutorial Taught by Dr. Lise Getoor and Dr. Ashwin Machanavajjhala](http://www.datacommunitydc.org/blog/2013/08/entity-resolution-for-big-data)    
 - [A Theory for Record Linkage by Ivan P. Fellegi and Alan B. Sunter](http://courses.cs.washington.edu/courses/cse590q/04au/papers/Felligi69.pdf)   
 - etc.
