@@ -69,3 +69,13 @@ Other fields to consider for experimentation:
 Trying to solve 2 different problems:
 - Resolving duplication errors _within_ an event.    
 - Record linkage _across_ events.
+- 
+
+
+## APPROACH STEPS
+
+1) .CSV Format
+2) Database Format
+
+
+
