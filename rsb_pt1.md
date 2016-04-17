@@ -12,7 +12,7 @@ Some of the useful libraries you can `pip install`:
   8. [`pyjarowinkler`](https://pypi.python.org/pypi/pyjarowinkler/1.7) - compute the similarity score between two strings using Jaro-Winkler distance.     
 
 ### More Distance Metrics
-  1. [scipy](https://www.scipy.org/) - a Python-based ecosystem of open-source software for mathematics, science, and engineering. It includes a broad suite of [distance metrics](http://docs.scipy.org/doc/scipy/reference/spatial.distance.html) including Euclidean, Minkowski, Manhattan (taxi cab), Jaccard, and cosine distance.   
+  1. [`scipy`](https://www.scipy.org/) - a Python-based ecosystem of open-source software for mathematics, science, and engineering. It includes a broad suite of [distance metrics](http://docs.scipy.org/doc/scipy/reference/spatial.distance.html) including Euclidean, Minkowski, Manhattan (taxi cab), Jaccard, and cosine distance.   
   2. [Or implement them yourself in pure Python](https://dataaspirant.com/2015/04/11/five-most-popular-similarity-measures-implementation-in-python/)
 
 ## About Dedupe

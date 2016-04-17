@@ -15,6 +15,8 @@ The three primary tasks involved in entity resolution are deduplication, record 
 This post will explore some basic approaches to entity resolution using the Python `dedupe` library.
 
 ## Tools for entity resolution in Python
+Open source [projects](http://stats.stackexchange.com/questions/136755/popular-named-entity-resolution-software)    
+
 Some of the useful libraries you can `pip install`:    
 
 ### String Matching
