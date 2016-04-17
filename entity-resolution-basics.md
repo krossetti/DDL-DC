@@ -34,21 +34,20 @@ Some of the useful libraries you can `pip install`:
   2. [Or implement them yourself in pure Python](https://dataaspirant.com/2015/04/11/five-most-popular-similarity-measures-implementation-in-python/)
 
 ## About Dedupe
-Dedupe is a Python library that employs machine learning techniques to perform deduplication and entity resolution  on structured data. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets. __discuss scaling__
+Dedupe is a Python library that employs machine learning techniques to perform deduplication and entity resolution  on structured data. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets.
+
+__discuss scaling__    
 
 ### How Dedupe works    
-Effective deduplication relies largely on domain expertise. This is for two main reasons: firstly because domain experts through their experiences develop a set of heuristics that enable them to conceptualize what a canonical version of a record _should_ look like, even if they've never seen it in practice. Secondly, domain experts instinctively recognize which record subfields are most likely to uniquely identify a record; they know where to look. As such, Dedupe works by engaging the user in labeling the data via a command line interface, and using the resulting training data to develop a ruleset to identify similar or matching records within unseen data.    
-
-When comparing records, rather than treating each record as a single long string, Dedupe cleverly exploits the structure of the input data to instead compare the records _field by field_. Dedupe scans the data to create tuples of records that it will propose to the user to label as being either matches, not matches, or possible matches. These `uncertainPairs` are identified using a combination of __blocking__ , __affine gap distance__ and __active learning__.  
+Effective deduplication relies largely on domain expertise. This is for two main reasons: firstly because domain experts through their experiences develop a set of heuristics that enable them to conceptualize what a canonical version of a record _should_ look like, even if they've never seen it in practice. Secondly, domain experts instinctively recognize which record subfields are most likely to uniquely identify a record; they just know where to look. As such, Dedupe works by engaging the user in labeling the data via a command line interface, and using machine learning on the resulting training data to predict similar or matching records within unseen data.    
 
 ### Blocking, affine gap distance, and active learning    
-Blocking is a method for reducing the number of overall record comparisons that need to be made. Dedupe's method of blocking involves engineering subsets of feature vectors (these are called 'predicates') that can be compared across records. Records are then grouped ('blocked') by matching predicates, so that only records with matching predicates will be compared to each other. The blocks are developed by computing the edit distance between predicates across records. Dedupe using a distance metric called affine gap distance, is a variation on Hamming distance that makes subsequent consecutive deletions or insertions cheaper.
+Let's imagine that our dataset is a list of people represented by attributes like names, addresses, personal characteristics and preferences.
 
-The advantages of these approaches are more pronounced when certain feature vectors of records are much more likely to assist in identifying matches than are other attributes. For example, let's imagine that our dataset is a list of people represented by attributes like names, addresses, personal characteristics and preferences.
-
+__this is a placeholder image - we should make a better one to illustrate these concepts__    
 ![Imaginary people data for deduplication](figures/people_data.png)
 
-Our goal then is to deduplicate the list to ensure that only one record exists for each person. Features like names, phone numbers, and zipcodes are probably going to be more useful than state, age, or favorite food. Dedupe lets the user nominate the features they believe will be most useful:   
+Our goal, then, is to deduplicate the list to ensure that only one record exists for each person. Features like names, phone numbers, and zipcodes are probably going to be more useful than state, age, or favorite food. When comparing records, rather than treating each record as a single long string, Dedupe cleverly exploits the structure of the input data to instead compare the records _field by field_. The advantage of this approach is more pronounced when certain feature vectors of records are much more likely to assist in identifying matches than are other attributes. Dedupe lets the user nominate the features they believe will be most useful:   
 
 ```python
 fields = [
@@ -59,8 +58,21 @@ fields = [
     ]
 ```    
 
+Dedupe scans the data to create tuples of records that it will propose to the user to label as being either matches, not matches, or possible matches. These `uncertainPairs` are identified using a combination of __blocking__ , __affine gap distance__ and __active learning__.
+
+Blocking is used to reduce the number of overall record comparisons that need to be made. Dedupe's method of blocking involves engineering subsets of feature vectors (these are called 'predicates') that can be compared across records. In the case of our people dataset above, the predicates might be things like:     
+  - the first three digits of the phone number    
+  - the full name    
+  - the first five characters of the name    
+  - a random 4-gram within the city name     
+
+Records are then grouped ('blocked') by matching predicates, so that only records with matching predicates will be compared to each other during the active learning phase. The blocks are developed by computing the edit distance between predicates across records. Dedupe uses a distance metric called affine gap distance, which is a variation on Hamming distance that makes subsequent consecutive deletions or insertions cheaper.
+
+__diagram to explain affine gap distance__    
+
 The relative weight of these different feature vectors can be learned during the active learning process and expressed numerically to ensure that features that will be most predictive of matches will be 'heavier' in the overall matching schema. As the user labels more and more tuples, Dedupe gradually relearns the weights, recalculates the edit distances between records, and updates its list of the most uncertain pairs to propose to the user for labeling.
 
+Once the user has generated enough labels, the learned weights are used to calculate the probability that each pair of records within a block is a duplicate or not.  In order to scale the pairwise matching up to larger tuples of matched records (in the case that entities may appear more than twice within a document), Dedupe uses hierarchical clustering with centroidal linkage. Records within some threshold distance of a centroid will be grouped together. The final result is an annotated version of the original dataset that now includes a centroid label for each record.    
 
 ## Testing out `dedupe`
 _Start by walking people through the csv_example.py from the `dedupe-examples` repo_
