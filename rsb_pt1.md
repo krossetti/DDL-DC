@@ -30,7 +30,7 @@ The advantages of these approaches are more pronounced when certain feature vect
 
 ![Imaginary people data for deduplication](figures/people_data.png)
 
-Our goal then is to deduplicate the list to ensure that only one record exists for each person. Features like names, phone numbers, and zipcodes are probably going to be more useful than state, age, or favorite food. Dedupe lets the user to nominate the features they believe will be most useful:   
+Our goal then is to deduplicate the list to ensure that only one record exists for each person. Features like names, phone numbers, and zipcodes are probably going to be more useful than state, age, or favorite food. Dedupe lets the user nominate the features they believe will be most useful:   
 
 ```python
 fields = [
