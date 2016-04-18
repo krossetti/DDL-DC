@@ -5,7 +5,7 @@ _by Kyle Rossetti and Rebecca Bilbro_
 ### What is entity resolution?    
 Entity resolution is the task of disambiguating records that correspond to real world entities across and within datasets. The applications of entity resolution are tremendous, particularly for public sector and federal datasets related to health, transportation, finance, law enforcement, and antiterrorism.  
 
-Unfortunately, the problems associated with entity resolution are equally tremendous -- as the volume and velocity of data grow, inference across networks and semantic relationships between entities becomes more and more difficult. Data quality issues, schema variations, and idiosyncratic data collection traditions can all complicate these problems even further. When combined, such challenges amount to a substantial barrier to organizations’ ability to fully understand their data, let alone make effective use of predictive analytics to optimize targeting, thresholding, and resource management.  
+Unfortunately, the problems associated with entity resolution are equally tremendous &mdash; as the volume and velocity of data grow, inference across networks and semantic relationships between entities becomes more and more difficult. Data quality issues, schema variations, and idiosyncratic data collection traditions can all complicate these problems even further. When combined, such challenges amount to a substantial barrier to organizations’ ability to fully understand their data, let alone make effective use of predictive analytics to optimize targeting, thresholding, and resource management.  
 
 The three primary tasks involved in entity resolution are deduplication, record linkage, and canonicalization:    
 1. Deduplication    
@@ -15,26 +15,30 @@ The three primary tasks involved in entity resolution are deduplication, record 
 This post will explore some basic approaches to entity resolution using the Python `dedupe` library.
 
 ## Tools for entity resolution in Python
-Open source [projects](http://stats.stackexchange.com/questions/136755/popular-named-entity-resolution-software)    
+On a programming level, entity resolution generally requires a combination of natural language processing, distance metric computation, and string matching. For these tasks, there are several useful libraries you can `pip install`:    
 
-Some of the useful libraries you can `pip install`:    
+### Natural Language Processing
+  1. [`gensim`](https://pypi.python.org/pypi/gensim/0.12.4) &mdash; a Python library for topic modeling, document indexing and similarity retrieval with large corpora.    
+  2. [`nltk`](http://www.nltk.org/) &mdash; a package for natural language processing, computational linguistics, and text analytics.    
+  3. [`scikit-learn`](http://scikit-learn.org/stable/) &mdash; a Python module for [machine learning](https://districtdatalabs.silvrback.com/an-introduction-to-machine-learning-with-python) built on top of SciPy.     
+
+### Distance Metrics
+  1. [`distance`](https://pypi.python.org/pypi/Distance/0.1.3) &mdash; C implemented distance metrics for computing similarities between sequences, including Levenshtein, Hamming, Jaccard, and Sorensen distance.    
+  2. [`scipy`](https://www.scipy.org/) &mdash; a Python-based ecosystem of open-source software for mathematics, science, and engineering. It also includes a broad suite of [distance metrics](http://docs.scipy.org/doc/scipy/reference/spatial.distance.html) including Euclidean, Minkowski, Manhattan (taxi cab), Jaccard, and cosine distance.   
+  3. [Or, implement them yourself in pure Python](https://dataaspirant.com/2015/04/11/five-most-popular-similarity-measures-implementation-in-python/)    
 
 ### String Matching
-  1. [`gensim`](https://pypi.python.org/pypi/gensim/0.12.4) - a Python library for topic modeling, document indexing and similarity retrieval with large corpora.    
-  2. [`dedupe`](https://pypi.python.org/pypi/dedupe/1.4.3) - Datamade's Python library that uses machine learning to perform deduplication and entity resolution quickly on structured data.     
-  3. [`affinegap`](https://pypi.python.org/pypi/affinegap/1.9) - Datamade's Cython implementation of the affine gap string distance.   
-  4. [`python-Levenshtein`](https://pypi.python.org/pypi/python-Levenshtein/0.12.0) - library for computing string edit distances and similarities.   
-  5. [`fuzzywuzzy`](https://pypi.python.org/pypi/fuzzywuzzy/0.10.0) - a fuzzy matching implementation that uses Levenshtein Distance to help calculate differences between strings.    
-  6. [`fuzzy`](https://pypi.python.org/pypi/Fuzzy/1.1) - a python library implementing common phonetic algorithms quickly.    
-  7. [`editdistance`](https://pypi.python.org/pypi/editdistance) - a simple implementation of Levenshtein distance with C++ and Cython.    
-  8. [`pyjarowinkler`](https://pypi.python.org/pypi/pyjarowinkler/1.7) - compute the similarity score between two strings using Jaro-Winkler distance.     
+  1. [`pybloom`](https://pypi.python.org/pypi/pybloom/1.1) &mdash; a Python implementation of the probabilistic Bloom filter data structure for probabilistic set matching.    
+  2. [`affinegap`](https://pypi.python.org/pypi/affinegap/1.9) &mdash; Datamade's Cython implementation of the affine gap string distance.   
+  3. [`python-Levenshtein`](https://pypi.python.org/pypi/python-Levenshtein/0.12.0) &mdash; library for computing string edit distances and similarities.   
+  4. [`fuzzywuzzy`](https://pypi.python.org/pypi/fuzzywuzzy/0.10.0) &mdash; a fuzzy matching implementation that uses Levenshtein Distance to help calculate differences between strings.    
+  5. [`fuzzy`](https://pypi.python.org/pypi/Fuzzy/1.1) &mdash; a Python library implementing common phonetic algorithms quickly.    
+  6. [`editdistance`](https://pypi.python.org/pypi/editdistance) &mdash; a simple implementation of Levenshtein distance with C++ and Cython.    
+  7. [`pyjarowinkler`](https://pypi.python.org/pypi/pyjarowinkler/1.7) &mdash; compute the similarity score between two strings using Jaro-Winkler distance.     
 
-### More Distance Metrics
-  1. [scipy](https://www.scipy.org/) - a Python-based ecosystem of open-source software for mathematics, science, and engineering. It includes a broad suite of [distance metrics](http://docs.scipy.org/doc/scipy/reference/spatial.distance.html) including Euclidean, Minkowski, Manhattan (taxi cab), Jaccard, and cosine distance.   
-  2. [Or implement them yourself in pure Python](https://dataaspirant.com/2015/04/11/five-most-popular-similarity-measures-implementation-in-python/)
 
 ## About Dedupe
-Dedupe is a Python library that employs machine learning techniques to perform deduplication and entity resolution  on structured data. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets.
+[`dedupe`](https://pypi.python.org/pypi/dedupe/1.4.3) is a library that uses machine learning to perform deduplication and entity resolution quickly on structured data. It isn't the only tool available in Python for doing entity resolution tasks, but it is the only one (as far as we know) that conceives of entity resolution as it's primary task. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets.
 
 __discuss scaling__    
 
