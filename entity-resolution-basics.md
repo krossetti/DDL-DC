@@ -38,7 +38,7 @@ On a programming level, entity resolution generally requires a combination of na
 
 
 ## About Dedupe
-[`dedupe`](https://pypi.python.org/pypi/dedupe/1.4.3) is a library that uses machine learning to perform deduplication and entity resolution quickly on structured data. It isn't the only tool available in Python for doing entity resolution tasks, but it is the only one (as far as we know) that conceives of entity resolution as it's primary task. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets.
+[Dedupe](https://pypi.python.org/pypi/dedupe/1.4.3) is a library that uses machine learning to perform deduplication and entity resolution quickly on structured data. It isn't the only tool available in Python for doing entity resolution tasks, but it is the only one (as far as we know) that conceives of entity resolution as it's primary task. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets.
 
 __discuss scaling__    
 
@@ -124,8 +124,36 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 - how to get the data into shape for analysis    
 
 ## Tailoring the code
-_Move to using the PostgreSQL example from the `dedupe-examples` repo_
-- what you need to modify in the `dedupe` examples to get the code to work for the WH dataset    
+Next we'll discuss what is needed to tailor a `dedupe` example to get the code to work for the White House visitors log dataset. The main challenge with this dataset is the datetime formatting irregularities. In order to compare the datetime strings across records, the formatting needs to be as consistent as possible. The other challenge is the sheer size of this dataset; in order to run optimally, we'll need to load the data into a database. The following script takes the csv data in as input, parses the datetime fields we're interested in, and outputs a database table that retains the desired columns.
+
+```python
+def dateParseSQL(nfile):
+    cur.execute('''CREATE TABLE IF NOT EXISTS visitors_new
+                  (lastname   varchar,
+                  firstname   varchar,
+                  uin         varchar,
+                  apptmade    varchar,
+                  apptstart   varchar,
+                  apptend     varchar,
+                  meeting_loc varchar);''')
+    conn.commit()
+    with open(nfile, 'rU') as infile:
+        reader = csv.reader(infile, delimiter=',')
+        next(reader, None)
+        for row in reader:
+            for field in DATEFIELDS:
+                if row[field] != '':
+                    try:
+                        dt = parser.parse(row[field])
+                        row[field] = dt.isoformat()
+                    except:
+                        continue
+            sql = "INSERT INTO visitors_new(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) \
+                   VALUES (%s,%s,%s,%s,%s,%s,%s)"
+            cur.execute(sql, (row[0],row[1],row[3],row[10],row[11],row[12],row[21],))
+            conn.commit()
+```
+
 
 ## Results
 - what do the results look like after active learning & how to interpret them    
