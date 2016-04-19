@@ -1,6 +1,12 @@
 # Basics of Entity Resolution with Python and Dedupe
 _by Kyle Rossetti and Rebecca Bilbro_
 
+####All annotations in this size font
+#### - Ensure that certain examples have a business case associated with it; helps to frame the example
+#### - The placement of examples and visualization should be more frequent
+####    - How to visualize blocking and predicates
+
+
 ## Introduction    
 ### What is entity resolution?    
 Entity resolution is the task of disambiguating records that correspond to real world entities across and within datasets. The applications of entity resolution are tremendous, particularly for public sector and federal datasets related to health, transportation, finance, law enforcement, and antiterrorism.  
@@ -115,6 +121,8 @@ python csv_example.py
 ```
 
 You can see that `dedupe` is a command line application that will prompt the user to engage in active learning by showing pairs of entities and asking if they are the same or different.
+
+####Add a visualization of the Y / N / Unsure examples below so the reader can identify
 
 ```bash
 Do these records refer to the same thing?
