@@ -8,7 +8,7 @@
 # Date:         last updated 4/18/16
 # Organization: District Data Labs
 
-
+# Based on https://github.com/datamade/dedupe-examples/blob/master/pgsql_example/pgsql_example.py
 #####################################################################
 # Imports
 #####################################################################

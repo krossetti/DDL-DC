@@ -124,7 +124,36 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 - how to get the data into shape for analysis    
 
 ## Tailoring the code
-Next we'll discuss what is needed to tailor a `dedupe` example to get the code to work for the White House visitors log dataset. The main challenge with this dataset is the datetime formatting irregularities. In order to compare the datetime strings across records, the formatting needs to be as consistent as possible. The other challenge is the sheer size of this dataset; in order to run optimally, we'll need to load the data into a database. The following script takes the csv data in as input, parses the datetime fields we're interested in, and outputs a database table that retains the desired columns.
+Next we'll discuss what is needed to tailor a `dedupe` example to get the code to work for the White House visitors log dataset. The main challenge with this dataset is it's sheer size. Fortunately the dedupe-examples repo includes several examples that use databases. We'll be adapting the [PostgreSQL example](https://github.com/datamade/dedupe-examples/blob/master/pgsql_example/pgsql_example.py)
+
+First we'll need to import a few modules:    
+
+```python
+import csv
+import psycopg2
+from dateutil import parser
+```
+
+Next, we'll need to connect to our database:    
+
+```python
+conn = None
+
+DATABASE = your_db_name
+USER = your_user_name
+HOST = your_hostname
+PASSWORD = your_password
+
+try:
+    conn = psycopg2.connect(database=DATABASE, user=USER, host=HOST, password=PASSWORD)
+    print "I've connected"
+except:
+    print "I am unable to connect to the database"
+cur = conn.cursor()
+```
+
+The other challenge with our dataset are the numerous missing values and datetime formatting irregularities. In order to use the datetime strings to help with entity resolution, we'd like the formatting to be as consistent as possible. The following script handles both the datetime parsing and the missing values by combining Python's `dateutil` module and PostgreSQL's fairly forgiving 'varchar' type.
+This function takes the csv data in as input, parses the datetime fields we're interested in, and outputs a database table that retains the desired columns (keep in mind this will take a while to run).    
 
 ```python
 def dateParseSQL(nfile):
