@@ -98,7 +98,6 @@ def dateParseSQL(nfile):
                         VALUES (%s,%s,%s,%s,%s,%s,%s)""", (row[0],row[1],row[3],row[10],row[11],row[12],row[21]))
 
 
-
 if __name__ == '__main__':
     DATAURL = "https://open.whitehouse.gov/api/views/p86s-ychb/rows.csv?accessType=DOWNLOAD"
     ORIGFILE = "fixtures/whitehouse-visitors.csv"
@@ -112,3 +111,5 @@ if __name__ == '__main__':
 
     ## To parse the date time fields and output to a new PostgreSQL table - this will also take a while!
     dateParseSQL(ORIGFILE)
+    conn.commit()
+    conn.close()
