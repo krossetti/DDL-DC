@@ -21,13 +21,15 @@ from dateutil import parser
 #####################################################################
 # Connect to PostgreSQL
 #####################################################################
+conn = None
 try:
-    conn = psycopg2.connect("dbname='whitehouse' user='Tinkerbell' host='localhost' password=''")
+    conn = psycopg2.connect(database='whitehouse', user='Tinkerbell', host='localhost', password='')
     print "I've connected"
 except:
     print "I am unable to connect to the database"
-
 cur = conn.cursor()
+
+
 
 #####################################################################
 # Ingestion Tools
@@ -74,15 +76,10 @@ def dateParseSQL(nfile):
     Creates a new table in the database for entity resolution with just the fields:
     'lastname','firstname','uin','apptmade','apptstart','apptend', 'meeting_loc'
     """
-    cur.execute("""CREATE TABLE IF NOT EXISTS visitors_cl (
-                lastname varchar,
-                firstname varchar,
-                uin varchar,
-                apptmade varchar,
-                apptstart varchar,
-                apptend varchar,
-                meeting_loc varchar);""")
-    with open(nfile, 'rb') as infile:
+    cur.execute("CREATE TABLE IF NOT EXISTS visitors_new(lastname varchar,firstname varchar,uin varchar,apptmade varchar,apptstart varchar,apptend varchar,meeting_loc varchar)")
+    conn.commit()
+
+    with open(nfile, 'rU') as infile:
         reader = csv.reader(infile, delimiter=',')
         next(reader, None)
         for row in reader:
@@ -93,9 +90,13 @@ def dateParseSQL(nfile):
                         row[field] = dt.isoformat()
                     except:
                         continue
-            cur.execute("""INSERT INTO visitors_cl (
-                        lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc)
-                        VALUES (%s,%s,%s,%s,%s,%s,%s)""", (row[0],row[1],row[3],row[10],row[11],row[12],row[21]))
+            sql = "INSERT INTO visitors_new(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+            cur.execute(sql, (row[0],row[1],row[3],row[10],row[11],row[12],row[21],))
+            conn.commit()
+            cur.execute("SELECT * FROM visitors_new")
+            rows = cur.fetchall()
+            for row in rows:
+                print row
 
 
 if __name__ == '__main__':
@@ -111,5 +112,3 @@ if __name__ == '__main__':
 
     ## To parse the date time fields and output to a new PostgreSQL table - this will also take a while!
     dateParseSQL(ORIGFILE)
-    conn.commit()
-    conn.close()
