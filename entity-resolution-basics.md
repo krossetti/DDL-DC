@@ -32,6 +32,7 @@ There are many ways to encounter redundancy in a dataset.
 
 
 Why is entity resolution important within datasets?
+Entity resolution is not a new problem nor concept for those working with data sets. 
 
 
 ## Tools for entity resolution in Python
@@ -149,32 +150,35 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 
 The data set was pulled from the WhiteHouse.gov website, apart of the executive initiative for making more federal data open to the public. This particular set of data is a list of White House visitor record requests from 2006-2010. The schemas within the data set include:
 
-•	NAMELAST
-•	NAMEFIRST
-•	NAMEMID
-•	UIN
-•	BDGNBR
-•	Type of Access
+•	NAMELAST  (Last name of Entity)
+•	NAMEFIRST (First name of entity)
+•	NAMEMID (Middle name of entity)
+•	UIN (Unique Identification Number)
+•	BDGNBR (Badge Number)
+•	Type of Access (Access type to White House)
 •	TOA
 •	POA
 •	TOD
 •	POD
-•	APPT_MADE_DATE
-•	APPT_START_DATE
-•	APPT_END_DATE
-•	APPT_CANCEL_DATE
-•	Total_People
-•	LAST_UPDATEDBY
-•	POST	LastEntryDate
-•	TERMINAL_SUFFIX
-•	visitee_namelast
-•	visitee_namefirst
-•	MEETING_LOC
-•	MEETING_ROOM	CALLER_NAME_LAST
-•	CALLER_NAME_FIRST	CALLER_ROOM
-•	Description
-•	RELEASE_DATE
-The data source itself can be exported in a variety of formats to include, .json, .csv, and .xls. With 5 million data sets it can be a bit daunting for different formats.
+•	APPT_MADE_DATE (When the appointment date was made)
+•	APPT_START_DATE (When the appointment date is scheduled to start)
+•	APPT_END_DATE (When the appointment date is scheduled to end)
+•	APPT_CANCEL_DATE (When the appointment date was canceled)
+•	Total_People (Total number of people scheduled to attend)
+•	LAST_UPDATEDBY (Who was the last person to update this event)
+•	POST	(?)
+•	LastEntryDate (When the last update to this instance)
+•	TERMINAL_SUFFIX (where was )
+•	visitee_namelast (The visitee's last name)
+•	visitee_namefirst (The visitee's first name)
+•	MEETING_LOC (The location of the meeting)
+•	MEETING_ROOM	(The room number of the meeting)
+•	CALLER_NAME_LAST (?)
+•	CALLER_NAME_FIRST	(?)
+•	CALLER_ROOM (?)
+•	Description (Description of the event or visit)
+•	RELEASE_DATE (The date this set of logs were released to the public)
+The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS.   With 5 million data sets it can be a bit daunting for different formats.
 
 
 ## Tailoring the code
