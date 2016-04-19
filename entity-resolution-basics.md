@@ -14,6 +14,20 @@ The three primary tasks involved in entity resolution are deduplication, record 
 
 This post will explore some basic approaches to entity resolution using the Python `dedupe` library.
 
+Entity Resolution is the process of ensuring no duplicates within a dataset exists to skew the data
+
+What is an entity?
+Taking a step back from the data realm, an entity is essentially a pronoun with qualifying attributes to describe it as unique .
+
+Why is entity resolution a common issue, and how does it relate to data science
+
+Common issues with resolving entity redundancy?
+There are many ways to encounter redundancy in a dataset.
+
+
+Why is entity resolution important within datasets?
+
+
 ## Tools for entity resolution in Python
 On a programming level, entity resolution generally requires a combination of natural language processing, distance metric computation, and string matching. For these tasks, there are several useful libraries you can `pip install`:    
 
@@ -121,7 +135,39 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 ![Data snapshot](figures/visitors.png)
 - how to load it into Python    
 - what the features are    
-- how to get the data into shape for analysis    
+- how to get the data into shape for analysis  
+
+5. About the dataset (Kyle)
+
+The data set was pulled from the WhiteHouse.gov website, apart of the executive initiative for making more federal data open to the public. This particular set of data is a list of White House visitor record requests from 2006-2010. The schemas within the data set include:
+
+•	NAMELAST
+•	NAMEFIRST
+•	NAMEMID
+•	UIN
+•	BDGNBR
+•	Type of Access
+•	TOA
+•	POA
+•	TOD
+•	POD
+•	APPT_MADE_DATE
+•	APPT_START_DATE
+•	APPT_END_DATE
+•	APPT_CANCEL_DATE
+•	Total_People
+•	LAST_UPDATEDBY
+•	POST	LastEntryDate
+•	TERMINAL_SUFFIX
+•	visitee_namelast
+•	visitee_namefirst
+•	MEETING_LOC
+•	MEETING_ROOM	CALLER_NAME_LAST
+•	CALLER_NAME_FIRST	CALLER_ROOM
+•	Description
+•	RELEASE_DATE
+The data source itself can be exported in a variety of formats to include, .json, .csv, and .xls. With 5 million data sets it can be a bit daunting for different formats.
+
 
 ## Tailoring the code
 Next we'll discuss what is needed to tailor a `dedupe` example to get the code to work for the White House visitors log dataset. The main challenge with this dataset is it's sheer size. Fortunately the dedupe-examples repo includes several examples that use databases. We'll be adapting the [PostgreSQL example](https://github.com/datamade/dedupe-examples/blob/master/pgsql_example/pgsql_example.py)
