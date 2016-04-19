@@ -79,7 +79,7 @@ def dateParseSQL(nfile):
     Creates a new table in the database with just those fields for use in the
     entity resolution task.
     """
-    cur.execute('''CREATE TABLE IF NOT EXISTS visitors_new
+    cur.execute('''CREATE TABLE IF NOT EXISTS visitors_er
                   (lastname   varchar,
                   firstname   varchar,
                   uin         varchar,
@@ -99,14 +99,12 @@ def dateParseSQL(nfile):
                         row[field] = dt.isoformat()
                     except:
                         continue
-            sql = "INSERT INTO visitors_new(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) \
+            sql = "INSERT INTO visitors_er(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) \
                    VALUES (%s,%s,%s,%s,%s,%s,%s)"
             cur.execute(sql, (row[0],row[1],row[3],row[10],row[11],row[12],row[21],))
             conn.commit()
-            cur.execute("SELECT * FROM visitors_new")
-            rows = cur.fetchall()
-            for row in rows:
-                print row
+    print "All done!"
+
 
 
 if __name__ == '__main__':

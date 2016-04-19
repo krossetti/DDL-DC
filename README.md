@@ -1,13 +1,10 @@
 # DDL-DC
 Entity Resolution for DDL
 
-
 ## About:
 
 The data that is being used for this entity resolution project is from the White House Visitor logs.
         https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb
-
-
 
 ## Project Overview:
 
@@ -47,15 +44,10 @@ columns = [
         ]
 
 These are the 5 attributes chosen for the `dedupe` training set:
-
         1) NAMELAST    
-
         2) NAMEFIRST    
-
         3) APPT_START_TIME    
-
         4) MEETING_LOC    
-
         5) APPT_MADE_DATE    
 
 Other fields to consider for experimentation:    
@@ -67,12 +59,9 @@ Other fields to consider for experimentation:
 
 ## Goals
 Trying to solve 2 different problems:    
-- Resolving duplication errors _within_ an event.    
-- Record linkage _across_ events.    
-
-
+ - Resolving duplication errors _within_ an event.    
+ - Record linkage _across_ events.    
 
 ## APPROACH STEPS
-
-1) .CSV Format
-2) Database Format
+ - .CSV Format    
+ - Database Format
