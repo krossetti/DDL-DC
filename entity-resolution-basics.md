@@ -30,32 +30,8 @@ Why is entity resolution a common issue, and how does it relate to data science
 Common issues with resolving entity redundancy?
 There are many ways to encounter redundancy in a dataset.
 
-
-Why is entity resolution important within datasets?
-Entity resolution is not a new problem nor concept for those working with data sets. 
-
-
-## Tools for entity resolution in Python
-On a programming level, entity resolution generally requires a combination of natural language processing, distance metric computation, and string matching. For these tasks, there are several useful libraries you can `pip install`:    
-
-### Natural Language Processing
-  1. [`gensim`](https://pypi.python.org/pypi/gensim/0.12.4) &mdash; a Python library for topic modeling, document indexing and similarity retrieval with large corpora.    
-  2. [`nltk`](http://www.nltk.org/) &mdash; a package for natural language processing, computational linguistics, and text analytics.    
-  3. [`scikit-learn`](http://scikit-learn.org/stable/) &mdash; a Python module for [machine learning](https://districtdatalabs.silvrback.com/an-introduction-to-machine-learning-with-python) built on top of SciPy.     
-
-### Distance Metrics
-  1. [`distance`](https://pypi.python.org/pypi/Distance/0.1.3) &mdash; C implemented distance metrics for computing similarities between sequences, including Levenshtein, Hamming, Jaccard, and Sorensen distance.    
-  2. [`scipy`](https://www.scipy.org/) &mdash; a Python-based ecosystem of open-source software for mathematics, science, and engineering. It also includes a broad suite of [distance metrics](http://docs.scipy.org/doc/scipy/reference/spatial.distance.html) including Euclidean, Minkowski, Manhattan (taxi cab), Jaccard, and cosine distance.   
-  3. [Or, implement them yourself in pure Python](https://dataaspirant.com/2015/04/11/five-most-popular-similarity-measures-implementation-in-python/)    
-
-### String Matching
-  1. [`pybloom`](https://pypi.python.org/pypi/pybloom/1.1) &mdash; a Python implementation of the probabilistic Bloom filter data structure for probabilistic set matching.    
-  2. [`affinegap`](https://pypi.python.org/pypi/affinegap/1.9) &mdash; Datamade's Cython implementation of the affine gap string distance.   
-  3. [`python-Levenshtein`](https://pypi.python.org/pypi/python-Levenshtein/0.12.0) &mdash; library for computing string edit distances and similarities.   
-  4. [`fuzzywuzzy`](https://pypi.python.org/pypi/fuzzywuzzy/0.10.0) &mdash; a fuzzy matching implementation that uses Levenshtein Distance to help calculate differences between strings.    
-  5. [`fuzzy`](https://pypi.python.org/pypi/Fuzzy/1.1) &mdash; a Python library implementing common phonetic algorithms quickly.    
-  6. [`editdistance`](https://pypi.python.org/pypi/editdistance) &mdash; a simple implementation of Levenshtein distance with C++ and Cython.    
-  7. [`pyjarowinkler`](https://pypi.python.org/pypi/pyjarowinkler/1.7) &mdash; compute the similarity score between two strings using Jaro-Winkler distance.     
+Why is entity resolution important within datasets?     
+Entity resolution is not a new problem nor concept for those working with data sets.
 
 
 ## About Dedupe
@@ -150,15 +126,15 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 
 The data set was pulled from the WhiteHouse.gov website, apart of the executive initiative for making more federal data open to the public. This particular set of data is a list of White House visitor record requests from 2006-2010. The schemas within the data set include:
 
-•	NAMELAST  (Last name of Entity)
-•	NAMEFIRST (First name of entity)
-•	NAMEMID (Middle name of entity)
-•	UIN (Unique Identification Number)
-•	BDGNBR (Badge Number)
-•	Type of Access (Access type to White House)
-•	TOA
-•	POA
-•	TOD
+ - NAMELAST  (Last name of Entity)    
+ - NAMEFIRST (First name of entity)    
+ - NAMEMID (Middle name of entity)    
+ - UIN (Unique Identification Number)    
+ - BDGNBR (Badge Number)    
+ - Type of Access (Access type to White House)
+ - TOA  (Time of Arrival)  
+ - POA    
+ - TOD
 •	POD
 •	APPT_MADE_DATE (When the appointment date was made)
 •	APPT_START_DATE (When the appointment date is scheduled to start)
