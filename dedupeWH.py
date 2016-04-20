@@ -27,14 +27,6 @@ from unidecode import unidecode
 #####################################################################
 # PostgreSQL Connection and Fixtures
 #####################################################################
-settings_file = 'postgres_settings'
-training_file = 'postgres_training.json'
-con = psy.connect(dbname='whitehouse', user='Tinkerbell', host='localhost', password='')
-con2 = psy.connect(dbname='whitehouse', user = 'Tinkerbell', host='localhost', password='')
-c = con.cursor(cursor_factory=psy.extras.RealDictCursor)
-
-
-
 optp = optparse.OptionParser()
 optp.add_option('-v', '--verbose', dest='verbose', action='count',
                 help='Increase verbosity (specify multiple times for more)'
@@ -47,9 +39,23 @@ elif opts.verbose >= 2:
     log_level = logging.DEBUG
 logging.getLogger().setLevel(log_level)
 
+settings_file = 'postgres_settings'
+training_file = 'postgres_training.json'
+
 start_time = time.time()
 
-MAILING_SELECT = 'SELECT lastname,firstname, apptmade, apptstart, apptend, meeting_loc FROM visitors_cl'
+con = psy.connect(dbname='whitehouse', user='Tinkerbell', host='localhost', password='')
+con2 = psy.connect(dbname='whitehouse', user = 'Tinkerbell', host='localhost', password='')
+c = con.cursor(cursor_factory=psy.extras.RealDictCursor)
+
+print 'importing data ...'
+c.execute('SELECT * FROM visitors_newer')
+data= c.fetchall()
+data_d = {}
+ID = 0
+for row in data:
+    data_d[ID] = dict(row)
+    ID += 1
 
 
 if os.path.exists(settings_file):
@@ -98,7 +104,7 @@ clustered_dupes = deduper.match(data_d, threshold)
 print '# duplicate sets', len(clustered_dupes)
 
 c2 = con2.cursor()
-c2.execute('SELECT * FROM visitors_cl')
+c2.execute('SELECT * FROM visitors_newer')
 data = c2.fetchall()
 
 full_data = []
@@ -113,22 +119,22 @@ for cluster_id, (cluster, score) in enumerate(clustered_dupes):
                 row = tuple(row)
                 full_data.append(row)
 
-columns = "SELECT column_name FROM information_schema.columns WHERE table_name = 'visitors_cl'"
+columns = "SELECT column_name FROM information_schema.columns WHERE table_name = 'visitors_newer'"
 c2.execute(columns)
 column_names = c2.fetchall()
 column_names = [x[0] for x in column_names]
 column_names.insert(0,'cluster_id')
 
-c2.execute('DROP TABLE IF EXISTS deduped_table')
+c2.execute('DROP TABLE IF EXISTS visitors_deduped')
 field_string = ','.join('%s varchar(200)' % name for name in column_names)
-c2.execute('CREATE TABLE deduped_table (%s)' % field_string)
+c2.execute('CREATE TABLE visitors_deduped (%s)' % field_string)
 con2.commit()
 
 num_cols = len(column_names)
 mog = "(" + ("%s,"*(num_cols -1)) + "%s)"
 args_str = ','.join(c2.mogrify(mog,x) for x in full_data)
 values = "("+ ','.join(x for x in column_names) +")"
-c2.execute("INSERT INTO deduped_table %s VALUES %s" % (values, args_str))
+c2.execute("INSERT INTO visitors_deduped %s VALUES %s" % (values, args_str))
 con2.commit()
 con2.close()
 con.close()
