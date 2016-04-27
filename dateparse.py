@@ -80,7 +80,8 @@ def dateParseSQL(nfile):
     entity resolution task.
     """
     cur.execute('''CREATE TABLE IF NOT EXISTS visitors_er
-                  (lastname   varchar,
+                  (visitor_id SERIAL PRIMARY KEY,
+                  lastname    varchar,
                   firstname   varchar,
                   uin         varchar,
                   apptmade    varchar,

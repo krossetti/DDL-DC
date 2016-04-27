@@ -49,7 +49,7 @@ con = psy.connect(dbname='whitehouse', user='Tinkerbell', host='localhost', pass
 con2 = psy.connect(dbname='whitehouse', user = 'Tinkerbell', host='localhost', password='')
 c = con.cursor(cursor_factory=psy.extras.RealDictCursor)
 
-VISITOR_SELECT = 'SELECT * FROM visitors_newer'
+VISITOR_SELECT = 'SELECT * FROM visitors_er'
 
 
 if os.path.exists(settings_file):
@@ -107,7 +107,7 @@ print 'creating inverted index'
 
 for field in deduper.blocker.index_fields:
     c2 = con.cursor('c2')
-    c2.execute("SELECT DISTINCT %s FROM visitors_newer" % field)
+    c2.execute("SELECT DISTINCT %s FROM visitors_er" % field)
     field_data = (row[field] for row in c2)
     deduper.blocker.index(field_data, field)
     c2.close()
@@ -227,7 +227,7 @@ c4.execute("SELECT visitor_id, lastname, firstname, "
            "uin, apptmade, apptstart, "
            "apptend, meeting_loc, block_id, smaller_ids "
            "FROM smaller_coverage "
-           "INNER JOIN visitors_newer "
+           "INNER JOIN visitors_er "
            "USING (visitor_id) "
            "ORDER BY (block_id)")
 
@@ -248,8 +248,8 @@ csv_writer = csv.writer(csv_file)
 
 for cluster, scores in clustered_dupes:
     cluster_id = cluster[0]
-    for donor_id, score in zip(cluster, scores) :
-        csv_writer.writerow([donor_id, cluster_id, score])
+    for visitor_id, score in zip(cluster, scores) :
+        csv_writer.writerow([visitor_id, cluster_id, score])
 
 c4.close()
 csv_file.close()
