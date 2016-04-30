@@ -109,7 +109,9 @@ Do these records refer to the same thing?
 You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for active learning. When you are finished, enter 'f' to quit.
 
 ## Active learning
-- screen shot of active learning process in command line    
+- screen shot of active learning process in command line  
+![Dedupe snapshot](figures/dedupeEX.png)
+
 - discuss what is going on under the hood    
 - mention how this could be made even better?   
 
