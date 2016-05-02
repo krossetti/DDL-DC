@@ -162,7 +162,8 @@ The data set was pulled from the WhiteHouse.gov website, apart of the executive 
  - CALLER_ROOM (?)
  - Description (Description of the event or visit)
  - RELEASE_DATE (The date this set of logs were released to the public)
-The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS.   With 5 million data sets it can be a bit daunting for different formats.
+
+ The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS.   With 5 million data sets it can be a bit daunting for different formats.
 
 
 ## Tailoring the code
