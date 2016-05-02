@@ -110,6 +110,8 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 
 ## Active learning
 - screen shot of active learning process in command line  
+When conducting the supervised learning portion of the deduplicaton of your data set, it is importation to see what type of attributes are selected as well as the choices you assess during the session. you are presented with 4 options; Yes, being a affirmation of the duplicate, No, being a negative of the duplicate, Unsure, meaning you cannot make a decision due to a lack of information, or finished, thus completing the session.
+
 ![Dedupe snapshot](figures/dedupeEX.png)
 
 
@@ -141,9 +143,9 @@ The data set was pulled from the WhiteHouse.gov website, apart of the executive 
  - TOA  (Time of Arrival)  
  - POA    
  - TOD
-•	POD
-•	APPT_MADE_DATE (When the appointment date was made)
-•	APPT_START_DATE (When the appointment date is scheduled to start)
+ - POD
+ - APPT_MADE_DATE (When the appointment date was made)
+ - APPT_START_DATE (When the appointment date is scheduled to start)
 •	APPT_END_DATE (When the appointment date is scheduled to end)
 •	APPT_CANCEL_DATE (When the appointment date was canceled)
 •	Total_People (Total number of people scheduled to attend)
