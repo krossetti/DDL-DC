@@ -11,18 +11,14 @@ _by Kyle Rossetti and Rebecca Bilbro_
 ### What is entity resolution?    
 Entity resolution is the task of disambiguating records that correspond to real world entities across and within datasets. The applications of entity resolution are tremendous, particularly for public sector and federal datasets related to health, transportation, finance, law enforcement, and antiterrorism.  
 
-Unfortunately, the problems associated with entity resolution are equally tremendous &mdash; as the volume and velocity of data grow, inference across networks and semantic relationships between entities becomes more and more difficult. Data quality issues, schema variations, and idiosyncratic data collection traditions can all complicate these problems even further. When combined, such challenges amount to a substantial barrier to organizations’ ability to fully understand their data, let alone make effective use of predictive analytics to optimize targeting, thresholding, and resource management.  
+Unfortunately, the problems associated with entity resolution are equally big &mdash; as the volume and velocity of data grow, inference across networks and semantic relationships between entities becomes more and more difficult. Data quality issues, schema variations, and idiosyncratic data collection traditions can all complicate these problems even further. When combined, such challenges amount to a substantial barrier to organizations’ ability to fully understand their data, let alone make effective use of predictive analytics to optimize targeting, thresholding, and resource management.  
 
-The three primary tasks involved in entity resolution are deduplication, record linkage, and canonicalization:    
-1. Deduplication    
-2. Record linkage    
-3. Canonicalization    
-
-This post will explore some basic approaches to entity resolution using the Python `dedupe` library.
-
-Entity Resolution is the process of ensuring no duplicates within a dataset exists to skew the data
-
-What is an entity?
+### Naming your problem
+Ironically, one of the problems in entity resolution is that even though it goes by a lot of different names, many people who struggle with entity resolution do not know the name of their problem. The three primary tasks involved in entity resolution are deduplication, record linkage, and canonicalization:    
+1. Deduplication (eliminating duplicate &mdash; exact &mdash; copies of repeated data)    
+2. Record linkage (identifying records that reference the same entity across different sources)    
+3. Canonicalization (converting data with more than one possible representation into a standard form)     
+Much as the key step in machine learning is to determine 'what is an instance', the key step in entity resolution is to determine 'what is an entity'
 Taking a step back from the data realm, an entity is essentially a pronoun with qualifying attributes to describe it as unique .
 
 Why is entity resolution a common issue, and how does it relate to data science
@@ -32,6 +28,10 @@ There are many ways to encounter redundancy in a dataset.
 
 Why is entity resolution important within datasets?     
 Entity resolution is not a new problem nor concept for those working with data sets.
+
+
+
+This post will explore some basic approaches to entity resolution using the Python `dedupe` library.
 
 
 ## About Dedupe
@@ -135,44 +135,56 @@ The data set was pulled from the WhiteHouse.gov website, apart of the executive 
  - BDGNBR (Badge Number)    
  - Type of Access (Access type to White House)
  - TOA  (Time of Arrival)  
- - POA    
- - TOD
-•	POD
-•	APPT_MADE_DATE (When the appointment date was made)
-•	APPT_START_DATE (When the appointment date is scheduled to start)
-•	APPT_END_DATE (When the appointment date is scheduled to end)
-•	APPT_CANCEL_DATE (When the appointment date was canceled)
-•	Total_People (Total number of people scheduled to attend)
-•	LAST_UPDATEDBY (Who was the last person to update this event)
-•	POST	(?)
-•	LastEntryDate (When the last update to this instance)
-•	TERMINAL_SUFFIX (where was )
-•	visitee_namelast (The visitee's last name)
-•	visitee_namefirst (The visitee's first name)
-•	MEETING_LOC (The location of the meeting)
-•	MEETING_ROOM	(The room number of the meeting)
-•	CALLER_NAME_LAST (?)
-•	CALLER_NAME_FIRST	(?)
-•	CALLER_ROOM (?)
-•	Description (Description of the event or visit)
-•	RELEASE_DATE (The date this set of logs were released to the public)
-The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS.   With 5 million data sets it can be a bit daunting for different formats.
+ - POA       
+ - TOD    
+ - POD    
+ - APPT_MADE_DATE (When the appointment date was made)    
+ - APPT_START_DATE (When the appointment date is scheduled to start)    
+ - APPT_END_DATE (When the appointment date is scheduled to end)    
+ - APPT_CANCEL_DATE (When the appointment date was canceled)    
+ - Total_People (Total number of people scheduled to attend)    
+ - LAST_UPDATEDBY (Who was the last person to update this event)    
+ - POST	(?)    
+ - LastEntryDate (When the last update to this instance)    
+ - TERMINAL_SUFFIX (where was )    
+ - visitee_namelast (The visitee's last name)    
+ - visitee_namefirst (The visitee's first name)    
+ - MEETING_LOC (The location of the meeting)    
+ - MEETING_ROOM	(The room number of the meeting)    
+ - CALLER_NAME_LAST (?)    
+ - CALLER_NAME_FIRST	(?)    
+ - CALLER_ROOM (?)    
+ - Description (Description of the event or visit)    
+ - RELEASE_DATE (The date this set of logs were released to the public)    
+
+The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS. Keeping in mind that there are 5 million rows, we opted for .csv and grabbed the data using `requests`:
+
+```python
+import requests
+
+def getData(url,fname):
+    """
+    Download the dataset from the webpage.
+    """
+    response = requests.get(url)
+    with open(fname, 'w') as f:
+        f.write(response.content)
+
+DATAURL = "https://open.whitehouse.gov/api/views/p86s-ychb/rows.csv?accessType=DOWNLOAD"
+ORIGFILE = "fixtures/whitehouse-visitors.csv"
+
+getData(DATAURL,ORIGFILE)
+```
 
 
-## Tailoring the code
-Next we'll discuss what is needed to tailor a `dedupe` example to get the code to work for the White House visitors log dataset. The main challenge with this dataset is it's sheer size. Fortunately the dedupe-examples repo includes several examples that use databases. We'll be adapting the [PostgreSQL example](https://github.com/datamade/dedupe-examples/blob/master/pgsql_example/pgsql_example.py)
-
-First we'll need to import a few modules:    
+First we'll need to import a few modules and connect to our database:    
 
 ```python
 import csv
 import psycopg2
 from dateutil import parser
-```
+from datetime import datetime
 
-Next, we'll need to connect to our database:    
-
-```python
 conn = None
 
 DATABASE = your_db_name
@@ -189,12 +201,14 @@ cur = conn.cursor()
 ```
 
 The other challenge with our dataset are the numerous missing values and datetime formatting irregularities. In order to use the datetime strings to help with entity resolution, we'd like the formatting to be as consistent as possible. The following script handles both the datetime parsing and the missing values by combining Python's `dateutil` module and PostgreSQL's fairly forgiving 'varchar' type.
-This function takes the csv data in as input, parses the datetime fields we're interested in, and outputs a database table that retains the desired columns (keep in mind this will take a while to run).    
+
+This function takes the csv data in as input, parses the datetime fields we're interested in ('lastname','firstname','uin','apptmade','apptstart','apptend', 'meeting_loc'.), and outputs a database table that retains the desired columns (keep in mind this will take a while to run).        
 
 ```python
 def dateParseSQL(nfile):
-    cur.execute('''CREATE TABLE IF NOT EXISTS visitors_new
-                  (lastname   varchar,
+    cur.execute('''CREATE TABLE IF NOT EXISTS visitors_er
+                  (visitor_id SERIAL PRIMARY KEY,
+                  lastname    varchar,
                   firstname   varchar,
                   uin         varchar,
                   apptmade    varchar,
@@ -213,10 +227,71 @@ def dateParseSQL(nfile):
                         row[field] = dt.isoformat()
                     except:
                         continue
-            sql = "INSERT INTO visitors_new(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) \
+            sql = "INSERT INTO visitors_er(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) \
                    VALUES (%s,%s,%s,%s,%s,%s,%s)"
             cur.execute(sql, (row[0],row[1],row[3],row[10],row[11],row[12],row[21],))
             conn.commit()
+    print "All done!"
+
+
+dateParseSQL(ORIGFILE)
+```
+
+About 60 of our rows had ASCII characters, which we dropped:
+
+```sql
+delete from visitors_er where firstname ~ '[^[:ascii:]]' OR lastname ~ '[^[:ascii:]]';
+```
+
+
+## Tailoring the code
+Next we'll discuss what is needed to tailor a `dedupe` example to get the code to work for the White House visitors log dataset. The main challenge with this dataset is it's sheer size. Fortunately the dedupe-examples repo includes several examples that use databases. We adapted the [PostgreSQL example](https://github.com/datamade/dedupe-examples/blob/master/pgsql_example/pgsql_example.py) as well as [Dan Chud](https://twitter.com/dchud)'s [adaptation of the script](https://github.com/dchud/osha-dedupe/blob/master/pgdedupe.py) for the OSHA dataset.
+
+
+
+```python
+FIELDS =  [{'field': 'firstname', 'variable name': 'firstname',
+            'type': 'String'},
+           {'field': 'lastname', 'variable name': 'lastname',
+            'type': 'String'}
+        ]
+```
+
+## Training observations
+
+- a lot of uncertainty, because of the sheer size of the dataset   
+- common vs. rare names ("Michael Grant" == "Michael Grant" ?)    
+- domestic vs. foreign sounding names    
+- compound names/middle names
+- nicknames make it hard "KIM ASKEW" and "KIMBERLEY ASKEW" vs. "Kathy Edwards" and "Katherine Edwards"   
+- however, nicknames only happen in firstname
+- gender e.g. "Brian Murphy" vs. "Briana Murphy"
+- easter eggs "Jon Doe"
+- misspellings "Davifd Culp" vs. "David Culp"
+- case (upper, lower, camel)
+
+Some are easy:    
+```bash
+lastname : KUZIEMKO
+firstname : ILYANA
+
+lastname : KUZIEMKO
+firstname : ILYANA
+
+Do these records refer to the same thing?
+(y)es / (n)o / (u)nsure / (f)inished
+```
+
+Some are hard:    
+```bash
+lastname : Desimone
+firstname : Daniel
+
+lastname : DeSimone
+firstname : Daniel
+
+Do these records refer to the same thing?
+(y)es / (n)o / (u)nsure / (f)inished
 ```
 
 
