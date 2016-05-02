@@ -45,9 +45,9 @@ training_file = 'wh_psql_training.json'
 
 start_time = time.time()
 
-con = psy.connect(dbname='whitehouse', user='Tinkerbell', host='localhost', password='')
-con2 = psy.connect(dbname='whitehouse', user = 'Tinkerbell', host='localhost', password='')
-c = con.cursor(cursor_factory=psy.extras.RealDictCursor)
+con = psycopg2.connect(dbname='whitehouse', user='Tinkerbell', host='localhost', password='')
+con2 = psycopg2.connect(dbname='whitehouse', user = 'Tinkerbell', host='localhost', password='')
+c = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 VISITOR_SELECT = 'SELECT * FROM visitors_er'
 
