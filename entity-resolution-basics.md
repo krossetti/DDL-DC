@@ -9,7 +9,7 @@ _by Kyle Rossetti and Rebecca Bilbro_
 
 ## Introduction    
 ### What is entity resolution?    
-Entity resolution is the task of disambiguating records that correspond to real world entities across and within datasets. The applications of entity resolution are tremendous, particularly for public sector and federal datasets related to health, transportation, finance, law enforcement, and antiterrorism.  
+Entity resolution (ER) is the task of disambiguating records that correspond to real world entities across and within datasets. The applications of entity resolution are tremendous, particularly for public sector and federal datasets related to health, transportation, finance, law enforcement, and antiterrorism.  
 
 Unfortunately, the problems associated with entity resolution are equally tremendous &mdash; as the volume and velocity of data grow, inference across networks and semantic relationships between entities becomes more and more difficult. Data quality issues, schema variations, and idiosyncratic data collection traditions can all complicate these problems even further. When combined, such challenges amount to a substantial barrier to organizations’ ability to fully understand their data, let alone make effective use of predictive analytics to optimize targeting, thresholding, and resource management.  
 
@@ -18,19 +18,12 @@ The three primary tasks involved in entity resolution are deduplication, record 
 2. Record linkage    
 3. Canonicalization    
 
-This post will explore some basic approaches to entity resolution using the Python `dedupe` library.
-
-Entity Resolution is the process of ensuring no duplicates within a dataset exists to skew the data
-
-What is an entity?
-Taking a step back from the data realm, an entity is essentially a pronoun with qualifying attributes to describe it as unique .
-
-Why is entity resolution a common issue, and how does it relate to data science
+This post will explore some basic approaches to entity resolution using the Python `dedupe` library. Let us first examine what is an entity? Taking a step back from the data realm, an entity is a distinct object with qualifying attributes to describe it as unique. So why is entity resolution a common issue in large data sets, and how does it relate to data science? ER is the process of ensuring no duplicates within a dataset exists to affect the analysis of the data.
 
 Common issues with resolving entity redundancy?
-There are many ways to encounter redundancy in a dataset.
+There are many ways we encounter redundancy in a dataset.
 
-Why is entity resolution important within datasets?     
+So what? Why is entity resolution important to us?     
 Entity resolution is not a new problem nor concept for those working with data sets.
 
 
@@ -99,7 +92,6 @@ python csv_example.py
 
 You can see that `dedupe` is a command line application that will prompt the user to engage in active learning by showing pairs of entities and asking if they are the same or different.
 
-#### -- Add a visualization of the Y / N / Unsure examples below so the reader can identify
 
 ```bash
 Do these records refer to the same thing?
@@ -138,7 +130,7 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 - what it looks like    
 ![Data snapshot](figures/visitors.png)
 ###How to load it into Python    
-  As a .csv file 
+  As a .csv file
 - what the features are    
 - how to get the data into shape for analysis  
 
@@ -146,7 +138,7 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 
 The data set was pulled from the WhiteHouse.gov website, apart of the executive initiative for making more federal data open to the public. This particular set of data is a list of White House visitor record requests from 2006-2010. The schemas within the data set include:
 
- - NAMELAST  (Last name of Entity)    
+ - NAMELAST  (Last name of entity)    
  - NAMEFIRST (First name of entity)    
  - NAMEMID (Middle name of entity)    
  - UIN (Unique Identification Number)    
@@ -164,7 +156,7 @@ The data set was pulled from the WhiteHouse.gov website, apart of the executive 
  - LAST_UPDATEDBY (Who was the last person to update this event)
  - POST	(?)
  - LastEntryDate (When the last update to this instance)
- - TERMINAL_SUFFIX (where was )
+ - TERMINAL_SUFFIX (where was 0)
  - visitee_namelast (The visitee's last name)
  - visitee_namefirst (The visitee's first name)
  - MEETING_LOC (The location of the meeting)
