@@ -17,9 +17,11 @@ Unfortunately, the problems associated with entity resolution are equally big &m
 Let us first consider what an entity is. Much as the key step in machine learning is to determine 'what is an instance', the key step in entity resolution is to determine 'what is an entity?' Taking a step back from the data realm, let's define an entity as a unique thing &mdash;  a person, a business, a product &mdash; that has a set of attributes that describe it &mdash; a name, an address, a shape, a title, a price, etc. But that single entity may have multiple references across data sources, like a person with two different email addresses, a company with two different phone numbers, or a product listed on two different websites, with slightly different descriptions. How can we tell that these multiple references point to the same entity? What happens when there are even more than two or three or ten references to the same entity, each slightly different? How can we determine which is the canonical version? What do we do with the duplicates? And if we want to ask questions about all the unique people, or businesses, or products in our dataset, how can we produce a final version of that dataset that is unique on entity? These questions are precisely why entity resolution is such a common issue in large data sets, albeit one that frequently goes unnamed.
 
 Ironically, one of the problems in entity resolution is that even though it goes by a lot of different names, many people who struggle with entity resolution do not know the name of their problem. The three primary tasks involved in entity resolution are deduplication, record linkage, and canonicalization:    
-1. Deduplication (eliminating duplicate &mdash; exact &mdash; copies of repeated data)    
-2. Record linkage (identifying records that reference the same entity across different sources)    
-3. Canonicalization (converting data with more than one possible representation into a standard form)    
+
+ 1. Deduplication (eliminating duplicate &mdash; exact &mdash; copies of repeated data)    
+ 2. Record linkage (identifying records that reference the same entity across different sources)    
+ 3. Canonicalization (converting data with more than one possible representation into a standard form)    
+
 Entity resolution is not a new problem, but thanks to Python and new machine learning libraries, entity resolution is an increasingly achievable objective. This post will explore some basic approaches to entity resolution using one of those tools &mdash; the Python `dedupe` library.
 
 
@@ -82,6 +84,8 @@ Then we'll run the csv_example.py file to see what dedupe can do:
 python csv_example.py
 ```
 
+## Active learning
+
 You can see that `dedupe` is a command line application that will prompt the user to engage in active learning by showing pairs of entities and asking if they are the same or different.
 
 
@@ -90,25 +94,18 @@ Do these records refer to the same thing?
 (y)es / (n)o / (u)nsure / (f)inished
 ```
 
-You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for active learning. When you are finished, enter 'f' to quit.
-
-## Active learning
-
 Active learning is the so-called 'special sauce' behind Dedupe. As in most supervised machine learning tasks, the challenge is to get labelled data that the model can learn from. The active learning phase in Dedupe is essentially an extended user-labelling session, which can be short if you have a small dataset, and can take longer if your dataset is big. You are presented with 4 options;
 
-In Figure 1, you see the first set of pairwise with the four choices below:
-
-(y)es:    confirms that the two references are to the same entity    
-(n)o:     labels the two references as not the same entity    
-(u)nsure: does not label the two references as the same entity or as different entities    
-or     
-(f)inished: ends the active learning session and triggers the supervised learning phase.    
-
-#####Figure 1.
 ![Dedupe snapshot](figures/dedupeEX.png)
 
+You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for active learning. When you are finished, enter 'f' to quit.
 
-#####Figure 2.
+ - (y)es:    confirms that the two references are to the same entity    
+ - (n)o:     labels the two references as not the same entity    
+ - (u)nsure: does not label the two references as the same entity or as different entities      
+ - (f)inished: ends the active learning session and triggers the supervised learning phase    
+
+
 ![Dedupe snapshot](figures/dedupeEX2.png)
 
 As you can see in the example above, some comparisons are very easy to decide. The first contains zero for zero hits on all four attributes being examined, so the verdict is most certainly a non-match. On the second, we have a 3/4 exact match, with the fourth being fuzzy in that one entity contains a piece of the matched entity; Ryerson vs Chicago Public Schools Ryerson. A human would be able to to discern these as two references to the same entity, and we can label it as such to enable the supervised learning that comes after the active learning.
