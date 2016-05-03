@@ -134,7 +134,9 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 - what it looks like    
 ![Data snapshot](figures/visitors.png)
 ###How to load it into Python    
-  As a .csv file
+  For the White House Visitor Log Requests, it can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS. With this specific data set, it contains over 5 million rows worth of data, and is restricted to a few of the formats previously mentioned. For this example the authors decided to export into a .csv format, once locally stored we can run our program with dedupe to pull the .csv file into the active learning session. this information ultimately gets stored into a PostgreSQL database for a sanitized 'data lake'
+
+
 - what the features are    
 - how to get the data into shape for analysis  
 
@@ -171,7 +173,7 @@ The data set was pulled from the WhiteHouse.gov website, apart of the executive 
  - Description (Description of the event or visit)
  - RELEASE_DATE (The date this set of logs were released to the public)
 
-The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS.   With 5 million data sets it can be a bit daunting for different formats.
+
 
 
 ## Tailoring the code
