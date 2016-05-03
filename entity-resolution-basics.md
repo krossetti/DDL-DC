@@ -11,26 +11,20 @@ _by Kyle Rossetti and Rebecca Bilbro_
 ### What is entity resolution?    
 Entity resolution (ER) is the task of disambiguating records that correspond to real world entities across and within datasets. The applications of entity resolution are tremendous, particularly for public sector and federal datasets related to health, transportation, finance, law enforcement, and antiterrorism.  
 
-Unfortunately, the problems associated with entity resolution are equally tremendous &mdash; as the volume and velocity of data grow, inference across networks and semantic relationships between entities becomes more and more difficult. Data quality issues, schema variations, and idiosyncratic data collection traditions can all complicate these problems even further. When combined, such challenges amount to a substantial barrier to organizations’ ability to fully understand their data, let alone make effective use of predictive analytics to optimize targeting, thresholding, and resource management.  
+Unfortunately, the problems associated with entity resolution are equally big &mdash; as the volume and velocity of data grow, inference across networks and semantic relationships between entities becomes more and more difficult. Data quality issues, schema variations, and idiosyncratic data collection traditions can all complicate these problems even further. When combined, such challenges amount to a substantial barrier to organizations’ ability to fully understand their data, let alone make effective use of predictive analytics to optimize targeting, thresholding, and resource management.  
 
-The three primary tasks involved in entity resolution are deduplication, record linkage, and canonicalization:    
-1. Deduplication    
-2. Record linkage    
-3. Canonicalization    
+### Naming your problem
+Let us first consider what an entity is. Much as the key step in machine learning is to determine 'what is an instance', the key step in entity resolution is to determine 'what is an entity?' Taking a step back from the data realm, let's define an entity as a unique thing &mdash;  a person, a business, a product &mdash; that has a set of attributes that describe it &mdash; a name, an address, a shape, a title, a price, etc. But that single entity may have multiple references across data sources, like a person with two different email addresses, a company with two different phone numbers, or a product listed on two different websites, with slightly different descriptions. How can we tell that these multiple references point to the same entity? What happens when there are even more than two or three or ten references to the same entity, each slightly different? How can we determine which is the canonical version? What do we do with the duplicates? And if we want to ask questions about all the unique people, or businesses, or products in our dataset, how can we produce a final version of that dataset that is unique on entity? These questions are precisely why entity resolution is such a common issue in large data sets, albeit one that frequently goes unnamed.
 
-This post will explore some basic approaches to entity resolution using the Python `dedupe` library. Let us first examine what is an entity? Taking a step back from the data realm, an entity is a distinct object with qualifying attributes to describe it as unique. So why is entity resolution a common issue in large data sets, and how does it relate to data science? ER is the process of ensuring no duplicates within a dataset exists to affect the analysis of the data.
-
-Common issues with resolving entity redundancy?
-There are many ways we encounter redundancy in a dataset.
-
-So what? Why is entity resolution important to us?     
-Entity resolution is not a new problem nor concept for those working with data sets.
+Ironically, one of the problems in entity resolution is that even though it goes by a lot of different names, many people who struggle with entity resolution do not know the name of their problem. The three primary tasks involved in entity resolution are deduplication, record linkage, and canonicalization:    
+1. Deduplication (eliminating duplicate &mdash; exact &mdash; copies of repeated data)    
+2. Record linkage (identifying records that reference the same entity across different sources)    
+3. Canonicalization (converting data with more than one possible representation into a standard form)    
+Entity resolution is not a new problem, but thanks to Python and new machine learning libraries, entity resolution is an increasingly achievable objective. This post will explore some basic approaches to entity resolution using one of those tools &mdash; the Python `dedupe` library.
 
 
 ## About Dedupe
-[Dedupe](https://pypi.python.org/pypi/dedupe/1.4.3) is a library that uses machine learning to perform deduplication and entity resolution quickly on structured data. It isn't the only tool available in Python for doing entity resolution tasks, but it is the only one (as far as we know) that conceives of entity resolution as it's primary task. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets.
-
-__discuss scaling__    
+[Dedupe](https://pypi.python.org/pypi/dedupe/1.4.3) is a library that uses machine learning to perform deduplication and entity resolution quickly on structured data. It isn't the only tool available in Python for doing entity resolution tasks, but it is the only one (as far as we know) that conceives of entity resolution as it's primary task. In addition to removing duplicate entries from within a single dataset, Dedupe can also do record linkage across disparate datasets. Dedupe also scales fairly well &mdash; in this post we demonstrate using the library with a smallish dataset of a few thousand records and a very large dataset of several million.
 
 ### How Dedupe works    
 Effective deduplication relies largely on domain expertise. This is for two main reasons: firstly because domain experts through their experiences develop a set of heuristics that enable them to conceptualize what a canonical version of a record _should_ look like, even if they've never seen it in practice. Secondly, domain experts instinctively recognize which record subfields are most likely to uniquely identify a record; they just know where to look. As such, Dedupe works by engaging the user in labeling the data via a command line interface, and using machine learning on the resulting training data to predict similar or matching records within unseen data.    
@@ -69,9 +63,7 @@ The relative weight of these different feature vectors can be learned during the
 Once the user has generated enough labels, the learned weights are used to calculate the probability that each pair of records within a block is a duplicate or not.  In order to scale the pairwise matching up to larger tuples of matched records (in the case that entities may appear more than twice within a document), Dedupe uses hierarchical clustering with centroidal linkage. Records within some threshold distance of a centroid will be grouped together. The final result is an annotated version of the original dataset that now includes a centroid label for each record.    
 
 ## Testing out `dedupe`
-_Start by walking people through the csv_example.py from the `dedupe-examples` repo_
-
-Let's experiment with using the `dedupe` library to try cleaning up our file. To get `dedupe` running, we'll need to install Unidecode, Future, and Dedupe.    
+Getting started with Dedupe is easy, and the developers have provided a [convenient repo](https://github.com/datamade/dedupe-examples) with examples that you can use and iterate on. Let's start by walking through the csv_example.py from the `dedupe-examples`. To get `dedupe` running, we'll need to install Unidecode, Future, and Dedupe.    
 
 In your terminal (we recommend doing so inside a [virtual environment](https://districtdatalabs.silvrback.com/how-to-develop-quality-python-code)):    
 
@@ -102,14 +94,15 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 
 ## Active learning
 
-When conducting the supervised learning portion of the deduplicaton of your data set, it is importation to see what type of attributes are selected as well as the choices you assess during the session. you are presented with 4 options;
+Active learning is the so-called 'special sauce' behind Dedupe. As in most supervised machine learning tasks, the challenge is to get labelled data that the model can learn from. The active learning phase in Dedupe is essentially an extended user-labelling session, which can be short if you have a small dataset, and can take longer if your dataset is big. You are presented with 4 options;
 
 In Figure 1, you see the first set of pairwise with the four choices below:
 
-(y)es, being a affirmation of the duplicate,
-(n)o, being a negative of the duplicate,
-(u)nsure, meaning you cannot make a decision due to a lack of information,
-or (f)inished, thus completing the session.
+(y)es:    confirms that the two references are to the same entity    
+(n)o:     labels the two references as not the same entity    
+(u)nsure: does not label the two references as the same entity or as different entities    
+or     
+(f)inished: ends the active learning session and triggers the supervised learning phase.    
 
 #####Figure 1.
 ![Dedupe snapshot](figures/dedupeEX.png)
@@ -118,15 +111,20 @@ or (f)inished, thus completing the session.
 #####Figure 2.
 ![Dedupe snapshot](figures/dedupeEX2.png)
 
-As you can see in the example above, the first tuple that contains zero for zero hits on all four attributes being examined, the verdict is most certainly a non-match, with a no being returned to the machine for duplication. On the second tuple, we have a 3/4 exact match, with the fourth being fuzzy in that one entity contains a piece of the matched entity; Ryerson vs Chicago Public Schools Ryerson. A human would be able to to discern these matches as two canonicalized entities, but a machine needs to such a fuzzy match affirmed.
+As you can see in the example above, some comparisons are very easy to decide. The first contains zero for zero hits on all four attributes being examined, so the verdict is most certainly a non-match. On the second, we have a 3/4 exact match, with the fourth being fuzzy in that one entity contains a piece of the matched entity; Ryerson vs Chicago Public Schools Ryerson. A human would be able to to discern these as two references to the same entity, and we can label it as such to enable the supervised learning that comes after the active learning.
 
-#####Figure 3.
-![Dedupe snapshot](figures/dedupeEX3.png)
+The csv_example also includes an [evaluation script](https://github.com/datamade/dedupe-examples/blob/master/csv_example/csv_evaluation.py) that will enable you to determine how successfully you were able to resolve the entities. It's important to note that the blocking, active learning and supervised learning portions of the deduplicaton process are very dependent on the dataset attributes that the user nominates for selection. In the csv_example, the script nominates the following four attributes:
 
-In the last tuple example, the authors would like to present the reader with an example for them to assess as to what it should be categorized as. Should this tuple be marked as a duplicate? Or is this a definite no, or is the reader completely unsure, and would require additional information to make their decision?
+```python
+fields = [
+    {'field' : 'Site name', 'type': 'String'},
+    {'field' : 'Address', 'type': 'String'},
+    {'field' : 'Zip', 'type': 'Exact', 'has missing' : True},
+    {'field' : 'Phone', 'type': 'String', 'has missing' : True},
+    ]
+```
 
-- discuss what is going on under the hood    
-- mention how this could be made even better?   
+A different combination of attributes would result in a different blocking, a different set of uncertainPairs, a different set of features to use in the active learning phase, and almost certainly a different result. In other words, user experience and domain knowledge factor in heavily at multiple phases of the deduplication process.
 
 ## About the dataset
 - where to get it:     
