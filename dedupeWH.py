@@ -24,7 +24,7 @@ from psycopg2.extras import DictCursor
 
 
 KEY_FIELD = 'visitor_id'
-SOURCE_TABLE = 'visitors'
+SOURCE_TABLE = 'test'  #'visitors'
 
 
 FIELDS =  [{'field': 'firstname', 'variable name': 'firstname',
@@ -33,10 +33,10 @@ FIELDS =  [{'field': 'firstname', 'variable name': 'firstname',
                'type': 'String','has missing': True},
               {'field': 'uin', 'variable name': 'uin',
                'type': 'String','has missing': True},
-              {'field': 'apptmade', 'variable name': 'apptmade',
-               'type': 'String','has missing': True},
-            #   {'field': 'apptstart', 'variable name': 'apptstart',
-            #    'type': 'String','has missing': True},
+            #   {'field': 'apptmade', 'variable name': 'apptmade',   #Dedupe doesn't like these dates, even as ordinals
+            #    'type': 'ShortString','has missing': True},
+            #   {'field': 'apptstart', 'variable name': 'apptstart', #Dedupe doesn't like these dates, even as ordinals
+            #    'type': 'ShortString','has missing': True},
               {'field': 'meeting_loc', 'variable name': 'meeting_loc',
                'type': 'String','has missing': True}
               ]
@@ -88,7 +88,7 @@ def main(args):
             # Create the sample (warning: very memory intensive)
             print 'Generating sample of %s records' % sample_size
             with con.cursor('deduper') as c_deduper:
-                c_deduper.execute('SELECT * FROM %s' % SOURCE_TABLE)
+                c_deduper.execute('SELECT visitor_id,lastname,firstname,uin,meeting_loc FROM %s' % SOURCE_TABLE)
                 temp_d = dict((i, row) for i, row in enumerate(c_deduper))
                 deduper.sample(temp_d, sample_size)
                 del(temp_d)
