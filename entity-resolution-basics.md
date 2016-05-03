@@ -103,12 +103,13 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 ## Active learning
 
 When conducting the supervised learning portion of the deduplicaton of your data set, it is importation to see what type of attributes are selected as well as the choices you assess during the session. you are presented with 4 options;
-- In Figure 1, you see the first set of tuples being compared with the three described choices below:
 
-(Y)es, being a affirmation of the duplicate,
-(N)o, being a negative of the duplicate,
-(U)nsure, meaning you cannot make a decision due to a lack of information,
-or (F)inished, thus completing the session.
+In Figure 1, you see the first set of pairwise with the four choices below:
+
+(y)es, being a affirmation of the duplicate,
+(n)o, being a negative of the duplicate,
+(u)nsure, meaning you cannot make a decision due to a lack of information,
+or (f)inished, thus completing the session.
 
 #####Figure 1.
 ![Dedupe snapshot](figures/dedupeEX.png)
