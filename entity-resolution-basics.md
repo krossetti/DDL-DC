@@ -123,13 +123,32 @@ fields = [
 
 A different combination of attributes would result in a different blocking, a different set of uncertainPairs, a different set of features to use in the active learning phase, and almost certainly a different result. In other words, user experience and domain knowledge factor in heavily at multiple phases of the deduplication process.
 
-## About the dataset
-- where to get it:     
-https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb    
-- what it looks like    
+## Something a bit harder
+In order to try out Dedupe with a more challenging project, we decided to try out deduplicating the White House visitors' log. Our hypothesis was that it would be interesting to be able to answer questions such as "How many times has person X visited the White House during administration Y?" However, in order to do that, it would be necessary to generate a version of the list that was unique on entity. We guessed that there would be many cases where there were multiple references to a single entity, potentially with slight variations in how they appeared in the dataset. We also expected to find a lot of names that seemed similar but in fact referenced different entities.  In other words, a good challenge!
+
+The data set we used was pulled from the [WhiteHouse.gov](https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb) website, a part of the executive initiative to make federal data more open to the public. This particular set of data is a list of White House visitor record requests from 2006-2010. Here's a snapshot of what the data looks like via the White House API.  
 ![Data snapshot](figures/visitors.png)
-###How to load it into Python    
-  For the White House Visitor Log Requests, it can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS. With this specific data set, it contains over 5 million rows worth of data, and is restricted to a few of the formats previously mentioned. For this example the authors decided to export into a .csv format, once locally stored we can run our program with dedupe to pull the .csv file into the active learning session. this information ultimately gets stored into a PostgreSQL database for a sanitized 'data lake'
+
+### Loading the data
+Using the API, the White House Visitor Log Requests can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS. However, it's important to keep in mind that the dataset contains over 5 million rows. For this reason, we decided to use .csv and grabbed the data using `requests`:
+
+```python
+import requests
+
+def getData(url,fname):
+    """
+    Download the dataset from the webpage.
+    """
+    response = requests.get(url)
+    with open(fname, 'w') as f:
+        f.write(response.content)
+
+DATAURL = "https://open.whitehouse.gov/api/views/p86s-ychb/rows.csv?accessType=DOWNLOAD"
+ORIGFILE = "fixtures/whitehouse-visitors.csv"
+
+getData(DATAURL,ORIGFILE)
+```
+example the authors decided to export into a .csv format, once locally stored we can run our program with dedupe to pull the .csv file into the active learning session. this information ultimately gets stored into a PostgreSQL database for a sanitized 'data lake'
 
 
 - what the features are    
@@ -137,7 +156,7 @@ https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-yc
 
 5. About the dataset (Kyle)
 
-The data set was pulled from the WhiteHouse.gov website, apart of the executive initiative for making more federal data open to the public. This particular set of data is a list of White House visitor record requests from 2006-2010. The schemas within the data set include:
+The schemas within the data set include:
 
  - NAMELAST  (Last name of entity)    
  - NAMEFIRST (First name of entity)    
