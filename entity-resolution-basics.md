@@ -549,14 +549,22 @@ Do these records refer to the same thing?
 (y)es / (n)o / (u)nsure / (f)inished
 ```
 
+## Results
+
 What we realized from this is that there are actually two different kinds of duplicates that appear in our dataset. The first kind of duplicate is one that generated via (likely mistaken) duplicate visitor request forms. We noticed that these duplicated tended to be proximal to each other in terms of visitor_id number, have the same meeting location and the same 'uin' (which confusingly, is not a unique guest identifier but appears to be assigned to every visitor within a unique tour group). The second kind of duplicate is what we think of as the 'frequent flier' &mdash; people who seem to spend a lot of time at the White House like staffers and other political appointees.
 
-## Results
+### Within visit duplicates
+
+
+### Across visit duplicates ('frequent fliers')
 - what do the results look like after active learning & how to interpret them    
 - how many duplicates were identified? (give examples)    
 - any errors? (and how could we make changes to prevent those kinds of errors?)    
 
+
 ## Conclusion
+Look forward to several upcoming blogs on string matching algorithms, data preparation, and entity identification...
+
 
 
 ## Recommended Reading
