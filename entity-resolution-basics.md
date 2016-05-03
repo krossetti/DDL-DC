@@ -123,6 +123,12 @@ or (f)inished, thus completing the session.
 
 ![Dedupe snapshot](figures/dedupeEX2.png)
 
+As you can see in the example above, the first tuple that contains zero for zero hits on all four attributes being examined, the verdict is most certainly a non-match, with a no being returned to the machine for duplication. On the second tuple, we have a 3/4 exact match, with the fourth being fuzzy in that one entity contains a piece of the matched entity; Ryerson vs Chicago Public Schools Ryerson. A human would be able to to discern these matches as two canonicalized entities, but a machine needs to such a fuzzy match affirmed.
+
+![Dedupe snapshot](figures/dedupeEX3.png)
+
+In the last tuple example, the authors would like to present the reader with an example for them to assess as to what it should be categorized as. Should this tuple be marked as a duplicate? Or is this a definite no, or is the reader completely unsure, and would require additional information to make their decision?
+
 - discuss what is going on under the hood    
 - mention how this could be made even better?   
 
@@ -131,7 +137,8 @@ or (f)inished, thus completing the session.
 https://open.whitehouse.gov/dataset/White-House-Visitor-Records-Requests/p86s-ychb    
 - what it looks like    
 ![Data snapshot](figures/visitors.png)
-- how to load it into Python    
+###How to load it into Python    
+  As a .csv file 
 - what the features are    
 - how to get the data into shape for analysis  
 
