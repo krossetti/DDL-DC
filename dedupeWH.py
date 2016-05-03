@@ -72,7 +72,7 @@ def candidates_gen(result_set):
 
 
 # @profile
-def main(args):
+def findDupes(args):
     deduper = dedupe.Dedupe(FIELDS)
 
     with psycopg2.connect(database=args.dbname,
@@ -279,4 +279,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 
-    main(args)
+    findDupes(args)
