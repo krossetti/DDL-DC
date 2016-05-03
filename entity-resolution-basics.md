@@ -108,7 +108,7 @@ When conducting the supervised learning portion of the deduplicaton of your data
 (Y)es, being a affirmation of the duplicate,
 (N)o, being a negative of the duplicate,
 (U)nsure, meaning you cannot make a decision due to a lack of information,
-or (f)inished, thus completing the session.
+or (F)inished, thus completing the session.
 
 #####Figure 1.
 ![Dedupe snapshot](figures/dedupeEX.png)
