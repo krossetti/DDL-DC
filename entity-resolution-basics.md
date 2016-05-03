@@ -110,7 +110,12 @@ You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for 
 
 ## Active learning
 - screen shot of active learning process in command line  
-When conducting the supervised learning portion of the deduplicaton of your data set, it is importation to see what type of attributes are selected as well as the choices you assess during the session. you are presented with 4 options; Yes, being a affirmation of the duplicate, No, being a negative of the duplicate, Unsure, meaning you cannot make a decision due to a lack of information, or finished, thus completing the session.
+When conducting the supervised learning portion of the deduplicaton of your data set, it is importation to see what type of attributes are selected as well as the choices you assess during the session. you are presented with 4 options;
+
+(Y)es, being a affirmation of the duplicate,
+(N)o, being a negative of the duplicate,
+(U)nsure, meaning you cannot make a decision due to a lack of information,
+or (f)inished, thus completing the session.
 
 ![Dedupe snapshot](figures/dedupeEX.png)
 
@@ -163,7 +168,7 @@ The data set was pulled from the WhiteHouse.gov website, apart of the executive 
  - Description (Description of the event or visit)
  - RELEASE_DATE (The date this set of logs were released to the public)
 
- The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS.   With 5 million data sets it can be a bit daunting for different formats.
+The data source itself can be exported in a variety of formats to include, .json, .csv, and .xlsx, .pdf, .xlm, and RSS.   With 5 million data sets it can be a bit daunting for different formats.
 
 
 ## Tailoring the code
