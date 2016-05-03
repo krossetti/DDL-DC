@@ -101,22 +101,25 @@ Do these records refer to the same thing?
 You can experiment with typing the 'y', 'n' and 'u' keys to flag duplicates for active learning. When you are finished, enter 'f' to quit.
 
 ## Active learning
-- screen shot of active learning process in command line  
+
 When conducting the supervised learning portion of the deduplicaton of your data set, it is importation to see what type of attributes are selected as well as the choices you assess during the session. you are presented with 4 options;
+- In Figure 1, you see the first set of tuples being compared with the three described choices below:
 
 (Y)es, being a affirmation of the duplicate,
 (N)o, being a negative of the duplicate,
 (U)nsure, meaning you cannot make a decision due to a lack of information,
 or (f)inished, thus completing the session.
 
+#####Figure 1.
 ![Dedupe snapshot](figures/dedupeEX.png)
 
 
-
+#####Figure 2.
 ![Dedupe snapshot](figures/dedupeEX2.png)
 
 As you can see in the example above, the first tuple that contains zero for zero hits on all four attributes being examined, the verdict is most certainly a non-match, with a no being returned to the machine for duplication. On the second tuple, we have a 3/4 exact match, with the fourth being fuzzy in that one entity contains a piece of the matched entity; Ryerson vs Chicago Public Schools Ryerson. A human would be able to to discern these matches as two canonicalized entities, but a machine needs to such a fuzzy match affirmed.
 
+#####Figure 3.
 ![Dedupe snapshot](figures/dedupeEX3.png)
 
 In the last tuple example, the authors would like to present the reader with an example for them to assess as to what it should be categorized as. Should this tuple be marked as a duplicate? Or is this a definite no, or is the reader completely unsure, and would require additional information to make their decision?
