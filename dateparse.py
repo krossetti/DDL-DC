@@ -5,7 +5,7 @@
 # Title:        Date Time Parser for Entity Resolution Project
 # Author:       Rebecca Bilbro
 # Version:      3.0
-# Date:         last updated 4/19/16
+# Date:         last updated 5/3/16
 # Organization: District Data Labs
 
 
@@ -66,7 +66,7 @@ def dateParseCSV(nfile,ofile):
                     if row[field] != '':
                         try:
                             dt = parser.parse(row[field])
-                            row[field] = dt.isoformat()
+                            row[field] = dt.toordinal()
                         except:
                             continue
                 writer.writerow([row[0],row[1],row[3],row[10],row[11],row[12],row[21]])
@@ -79,7 +79,7 @@ def dateParseSQL(nfile):
     Creates a new table in the database with just those fields for use in the
     entity resolution task.
     """
-    cur.execute('''CREATE TABLE IF NOT EXISTS visitors_er
+    cur.execute('''CREATE TABLE IF NOT EXISTS visitors
                   (visitor_id SERIAL PRIMARY KEY,
                   lastname    varchar,
                   firstname   varchar,
@@ -97,10 +97,10 @@ def dateParseSQL(nfile):
                 if row[field] != '':
                     try:
                         dt = parser.parse(row[field])
-                        row[field] = dt.isoformat()
+                        row[field] = dt.toordinal()
                     except:
                         continue
-            sql = "INSERT INTO visitors_er(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) \
+            sql = "INSERT INTO visitors(lastname,firstname,uin,apptmade,apptstart,apptend,meeting_loc) \
                    VALUES (%s,%s,%s,%s,%s,%s,%s)"
             cur.execute(sql, (row[0],row[1],row[3],row[10],row[11],row[12],row[21],))
             conn.commit()
