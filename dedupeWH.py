@@ -5,11 +5,12 @@
 # Title:        Dedupe the White House Visitors for DDRL Entity Resolution Project
 # Author:       Rebecca Bilbro
 # Version:      2.0
-# Date:         last updated 5/2/16
+# Date:         last updated 5/18/16
 # Organization: District Data Labs
 
 # Based on https://github.com/datamade/dedupe-examples/tree/master/pgsql_big_dedupe_example
 # and https://github.com/dchud/osha-dedupe/blob/master/pgdedupe.py
+
 #####################################################################
 # Imports
 #####################################################################
@@ -72,7 +73,7 @@ def candidates_gen(result_set):
 
 
 # @profile
-def main(args):
+def findDupes(args):
     deduper = dedupe.Dedupe(FIELDS)
 
     with psycopg2.connect(database=args.dbname,
@@ -113,12 +114,12 @@ def main(args):
             deduper.cleanupTraining()
 
             # Blocking
-            print 'Creating blocking_mapp table'
+            print 'Creating blocking_map table'
             c.execute("""
-                DROP TABLE IF EXISTS blocking_mapp
+                DROP TABLE IF EXISTS blocking_map
                 """)
             c.execute("""
-                CREATE TABLE blocking_mapp
+                CREATE TABLE blocking_map
                 (block_key VARCHAR(200), %s INTEGER)
                 """ % KEY_FIELD)
 
@@ -149,7 +150,7 @@ def main(args):
             csv_file.close()
 
             f = open(csv_file.name, 'r')
-            c.copy_expert("COPY blocking_mapp FROM STDIN CSV", f)
+            c.copy_expert("COPY blocking_map FROM STDIN CSV", f)
             f.close()
 
             os.remove(csv_file.name)
@@ -158,7 +159,7 @@ def main(args):
 
             print 'Indexing blocks'
             c.execute("""
-                CREATE INDEX blocking_mapp_key_idx ON blocking_mapp (block_key)
+                CREATE INDEX blocking_map_key_idx ON blocking_map (block_key)
                 """)
             c.execute("DROP TABLE IF EXISTS plural_key")
             c.execute("DROP TABLE IF EXISTS plural_block")
@@ -173,7 +174,7 @@ def main(args):
                 """)
             c.execute("""
                 INSERT INTO plural_key (block_key)
-                SELECT block_key FROM blocking_mapp
+                SELECT block_key FROM blocking_map
                 GROUP BY block_key HAVING COUNT(*) > 1
                 """)
 
@@ -186,7 +187,7 @@ def main(args):
             c.execute("""
                 CREATE TABLE plural_block
                 AS (SELECT block_id, %s
-                FROM blocking_mapp INNER JOIN plural_key
+                FROM blocking_map INNER JOIN plural_key
                 USING (block_key))
                 """ % KEY_FIELD)
 
@@ -270,7 +271,7 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dbname', dest='dbname', default='whitehouse',
+    parser.add_argument('--dbname', dest='dbname', default='wh',
                         help='database name')
     parser.add_argument('-s', '--sample', default=0.10, type=float,
                         help='sample size (percentage, default 0.10)')
@@ -279,4 +280,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 
-    main(args)
+    findDupes(args)
